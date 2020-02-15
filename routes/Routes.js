@@ -6,30 +6,44 @@ const repo = require('../repos/LibraryRepo');
 // TODO: Memanggil fungsi listBuku untuk mendapatkan data semua buku yang ada
 app.get('/', (req, res) => {
   // isi disini
+  repo.listBuku().then((library) => {
+    res.json(library)
+  }).catch((error) => console.log(error));
 });
 
 // TODO: Memanggil fungsi cariBuku untuk mendapatkan spesifik buku berdasarkan ID
 app.get('/:id', (req, res) => {
   const { id } = req.params;
-  // tambahkan disini
+  repo.cariBuku(id).then((library) => {
+    res.json(library)
+  }).catch((error) => console.log(error));
 });
 
 // TODO: Memanggil fungsi tambahBuku untuk menambah buku baru pada list
 app.post('/', (req, res) => {
-  const infoBukuBaru = req.body;
-  // isi disini
+  const infoBuku  = req.body;
+  console.log(infoBuku);
+  repo.tambahBuku(infoBuku).then((book) => {
+    res.json(book);
+  }).catch((error) => console.log(error));
 });
 
 // TODO: Memanggil fungsi hapusBuku untuk menghapus buku tertentu
 app.delete('/:id', (req, res) => {
   const { id } = req.params;
-  // isi disini
+  repo.hapusBuku(id).then((ok) => {
+    console.log(ok);
+    console.log(`Deleted record with id: ${id}`);
+    res.status(200).json([])
+  }).catch((error) => console.log(error));
 });
 
 // TODO: Memanggil fungsi rubahStatusPeminjaman untuk merubah status peminjaman buku tertentu
 app.put('/:id', (req, res) => {
   const { id } = req.params;
-  // isi disini
+  repo.rubahStatusPeminjaman(id)
+  .then(res.status(200).json([]))
+  .catch((error) => console.log(error));
 });
 
 // Memanggil fungsi rubahInfoBuku untuk merubah info peminjaman buku tertentu
